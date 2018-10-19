@@ -17,12 +17,17 @@ export class WindowController {
       height: 768,
       autoHideMenuBar: true,
       webPreferences: {
-        nodeIntegration: false
+        nodeIntegration: false,
+        partition: 'persist:teams'
       }
     });
 
     // and load the index.html of the app.
-    this.win.loadURL(teamsUrl);
+    this.win.loadURL(teamsUrl, {
+      // Latest Edge user agent
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134'
+    });
 
     // prevent the app quit, hide the window instead.
     this.win.on('close', e => {
@@ -45,48 +50,12 @@ export class WindowController {
       this.win.webContents.insertCSS(
         readFileSync(path.join(__dirname, '../css/annoyances.css'), 'utf-8')
       );
-      //this.getUnreadNumber();
-      //this.addUnreadNumberObserver();
 
       this.win.show();
     });
 
     // Open the new window in external browser
     this.win.webContents.on('new-window', this.openInBrowser);
-  }
-
-  getUnreadNumber() {
-    this.win.webContents.executeJavaScript(`
-            setTimeout(() => {
-                let unreadSpan = document.querySelector('.o30C-0mPu4HVLw3tCQIgs');
-                unreadSpan = unreadSpan.cloneNode(true);
-                unreadSpan.childNodes.forEach(item => {
-                    if (item.tagName) unreadSpan.removeChild(item);
-                });
-                console.log(unreadSpan.innerText);
-                require('electron').ipcRenderer.send('updateUnread', unreadSpan.innerText);
-            }, 10000);
-        `);
-  }
-
-  addUnreadNumberObserver() {
-    this.win.webContents.executeJavaScript(`
-            setTimeout(() => {
-                let unreadSpan = document.querySelector('.o30C-0mPu4HVLw3tCQIgs.q0S8YscBsDIqHYd_faniH');
-                let observer = new MutationObserver(mutations => {
-                    mutations.forEach(mutation => {
-                        console.log('Find change....');
-                        let copiedSpan = unreadSpan.cloneNode(true);
-                        copiedSpan.childNodes.forEach(item => {
-                            if (item.tagName) copiedSpan.removeChild(item);
-                        });
-                        require('electron').ipcRenderer.send('updateUnread', copiedSpan.innerText);
-                    });
-                });
-            
-                observer.observe(unreadSpan, {childList: true});
-            }, 10000);
-        `);
   }
 
   toggleWindow() {
