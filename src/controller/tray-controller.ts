@@ -28,9 +28,7 @@ export class TrayController {
   }
 
   createTrayIcon(value: number) {
-    const iconPath = value
-      ? '../../assets/outlook_linux_unread.png'
-      : '../../assets/outlook_linux_black.png';
+    const iconPath = '../../assets/icon.png';
     return nativeImage.createFromPath(path.join(__dirname, iconPath));
   }
 

@@ -22,7 +22,10 @@ class ElectronTeams {
 
   // check if the app is already running. return true if already launched, otherwise return false.
   isRunning() {
-    return app.hasSingleInstanceLock();
+    app.on('second-instance', () => {
+      setImmediate(() => app.exit(0));
+    });
+    return !app.requestSingleInstanceLock();
   }
 
   // init the main app
@@ -31,10 +34,6 @@ class ElectronTeams {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     app.on('ready', this.createControllers);
-
-    app.on('second-instance', () => {
-      if (this.windowController) this.windowController.win.show();
-    });
 
     // Quit when all windows are closed.
     app.on('window-all-closed', () => {

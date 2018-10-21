@@ -1,6 +1,7 @@
 import { BrowserWindow, shell } from 'electron';
 import path = require('path');
 import { readFileSync } from 'fs';
+const isDev = require('electron-is-dev');
 
 const teamsUrl = 'https://teams.microsoft.com';
 
@@ -22,6 +23,9 @@ export class WindowController {
       }
     });
 
+    if (isDev) {
+      this.win.webContents.openDevTools();
+    }
     // and load the index.html of the app.
     this.win.loadURL(teamsUrl, {
       // Latest Edge user agent

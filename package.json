@@ -1,6 +1,6 @@
 {
   "name": "teams-for-linux",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "main": "./app/index.js",
   "description": "Unofficial client for Microsoft Teams for Linux",
   "homepage": "https://github.com/JamieMagee/teams-for-linux",
@@ -22,7 +22,9 @@
     "dist": "yarn compile && electron-builder",
     "release": "yarn compile && electron-builder"
   },
-  "dependencies": {},
+  "dependencies": {
+    "electron-is-dev": "^1.0.1"
+  },
   "devDependencies": {
     "electron": "^3.0.5",
     "electron-builder": "^20.28.4",
