@@ -12,7 +12,7 @@ export class TrayController {
   }
 
   init() {
-    this.tray = new Tray(this.createTrayIcon(0));
+    this.tray = new Tray(this.createTrayIcon());
 
     const context = Menu.buildFromTemplate([
       { label: 'Quit', click: () => this.cleanupAndQuit() }
@@ -22,12 +22,12 @@ export class TrayController {
 
     this.tray.on('click', () => this.fireClickEvent());
 
-    ipcMain.on('updateUnread', (value: number) => {
-      this.tray.setImage(this.createTrayIcon(value));
+    ipcMain.on('updateUnread', () => {
+      this.tray.setImage(this.createTrayIcon());
     });
   }
 
-  createTrayIcon(value: number) {
+  createTrayIcon() {
     const iconPath = '../../assets/icon.png';
     return nativeImage.createFromPath(path.join(__dirname, iconPath));
   }
