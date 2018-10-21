@@ -1,5 +1,11 @@
+/* App download button */
 #download-mobile-app-button,
 #download-app-button,
 #get-app-button {
+  display: none;
+}
+
+/* Paste popup  */
+.cke_notifications_area {
   display: none;
 }
